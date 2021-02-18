@@ -4,7 +4,9 @@ import { useHistory } from 'react-router-dom'
 
 
 export const GameForm = () => {
+
     const history = useHistory()
+
     const { createGame, getGameTypes, gameTypes } = useContext(GameContext)
 
     /*
@@ -13,11 +15,11 @@ export const GameForm = () => {
         provide some default values.
     */
     const [currentGame, setCurrentGame] = useState({
-        skillLevel: 1,
-        numberOfPlayers: 0,
         title: "",
-        maker: "",
-        gameTypeId: 0
+        gameTypeId: 0,
+        numberOfPlayers: 0,
+        gamerId: "",
+        description: ""
     })
 
     /*
@@ -30,12 +32,10 @@ export const GameForm = () => {
 
     /*
         REFACTOR CHALLENGE START
-
         Can you refactor this code so that all property
         state changes can be handled with a single function
         instead of five functions that all, largely, do
         the same thing?
-
         One hint: [event.target.name]
     */
     const changeGameTitleState = (event) => {
@@ -44,9 +44,9 @@ export const GameForm = () => {
         setCurrentGame(newGameState)
     }
 
-    const changeGameMakerState = (event) => {
+    const changeGameTypeState = (event) => {
         const newGameState = { ...currentGame }
-        newGameState.maker = event.target.value
+        newGameState.gameTypeId = event.target.value
         setCurrentGame(newGameState)
     }
 
@@ -56,17 +56,18 @@ export const GameForm = () => {
         setCurrentGame(newGameState)
     }
 
-    const changeGameSkillLevelState = (event) => {
+    const changeGameMakerState = (event) => {
         const newGameState = { ...currentGame }
-        newGameState.skillLevel = event.target.value
+        newGameState.gamerId = event.target.value
         setCurrentGame(newGameState)
     }
 
-    const changeGameTypeState = (event) => {
+    const changeGameDescriptionState = (event) => {
         const newGameState = { ...currentGame }
-        newGameState.gameTypeId = event.target.value
+        newGameState.description = event.target.value
         setCurrentGame(newGameState)
     }
+
     /* REFACTOR CHALLENGE END */
 
     return (
@@ -74,11 +75,31 @@ export const GameForm = () => {
             <h2 className="gameForm__title">Register New Game</h2>
             <fieldset>
                 <div className="form-group">
+
                     <label htmlFor="title">Title: </label>
                     <input type="text" name="title" required autoFocus className="form-control"
                         value={currentGame.title}
                         onChange={changeGameTitleState}
                     />
+
+                    <label htmlFor="gameTypeId"> Game Type: </label>
+                    <input type="number" name="gameTypeId" required autoFocus className="form-control"
+                        value={currentGame.gameTypeId}
+                        onChange={changeGameTypeState}
+                    />
+
+                    <label htmlFor="numberOfPlayers"> Number of Players: </label>
+                    <input type="number" name="numberOfPlayers" required autoFocus className="form-control"
+                        value={currentGame.numberOfPlayers}
+                        onChange={changeGamePlayersState}
+                    />
+
+                    <label htmlFor="description"> Description: </label>
+                    <input type="text" name="description" required autoFocus className="form-control"
+                        value={currentGame.description}
+                        onChange={changeGameDescriptionState}
+                    />
+
                 </div>
             </fieldset>
 
@@ -89,19 +110,19 @@ export const GameForm = () => {
                     // Prevent form from being submitted
                     evt.preventDefault()
 
-                    const game = {
-                        maker: currentGame.maker,
+                    const newGame = {
                         title: currentGame.title,
-                        numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                        skillLevel: parseInt(currentGame.skillLevel),
-                        gameTypeId: parseInt(currentGame.gameTypeId)
+                        gameTypeId: +(currentGame.gameTypeId),
+                        numberOfPlayers: +(currentGame.numberOfPlayers),
+                        gamerId: +(currentGame.gamerId),
+                        description: currentGame.description
                     }
 
                     // Send POST request to your API
-                    createGame(game)
-                        .then(() => history.push("/games"))
+                    createGame(newGame)
+                        .then(() => history.push("/"))
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-2 btn-sep icon-create"> Create </button>
         </form>
     )
 }
