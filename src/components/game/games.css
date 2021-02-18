@@ -1,0 +1,13 @@
+.games {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.game {
+    background-color: goldenrod;
+    border: 2px dotted lime;
+    padding: 1rem;
+    line-height: 2rem;
+    margin: 1rem;
+}

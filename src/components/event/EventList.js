@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { EventContext } from "./EventProvider.js"
+import "./events.css"
 
 export const EventList = (props) => {
     const { events, getEvents } = useContext(EventContext)
@@ -25,7 +26,7 @@ export const EventList = (props) => {
                 </header>
                 {
                     events.map(event => {
-                        return <section key={event.id} className="registration">
+                        return <section key={event.id} className="event">
                             <div className="registration__game"> Game: {event.game.title} </div>
                             <div> Location: {event.location}</div>
                             <div>
